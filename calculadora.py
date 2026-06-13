@@ -27,3 +27,7 @@ if __name__ == "__main__":
     print(f"División: 6 / 3 = {division(6, 3)}")
     print("==================")
 
+
+def potencia(a, b):
+    return a ** b
+print(f"Potencia: 2^3 = {potencia(2, 3)}")
