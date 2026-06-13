@@ -1,0 +1,49 @@
+name: Build y Ejecución de Calculadora
+
+# Configuración: este workflow se ejecuta cuando:
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  # Permite ejecutarlo manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+# Definición de los jobs (tareas)
+jobs:
+  # Job principal: ejecutar la calculadora
+  build-and-run:
+    # El entorno donde se ejecutará (Ubuntu Linux)
+    runs-on: ubuntu-latest
+    
+    # Pasos a ejecutar
+    steps:
+      # Paso 1: Obtener el código del repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      # Paso 2: Configurar Python
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      # Paso 3: Mostrar versión de Python (verificación)
+      - name: Verificar Python
+        run: |
+          python --version
+          pip --version
+      
+      # Paso 4: Ejecutar el archivo calculadora.py
+      - name: Ejecutar calculadora.py
+        run: python calculadora.py
+      
+      # Paso 5: Ejecutar pruebas adicionales (verificación de funciones)
+      - name: Pruebas rápidas de las funciones
+        run: |
+          echo "=== Ejecutando pruebas de funciones ==="
+          python -c "from calculadora import suma, resta, multiplicacion, division; assert suma(2,3)==5; print('✓ suma OK')"
+          python -c "from calculadora import suma, resta, multiplicacion, division; assert resta(10,4)==6; print('✓ resta OK')"
+          python -c "from calculadora import suma, resta, multiplicacion, division; assert multiplicacion(3,4)==12; print('✓ multiplicación OK')"
+          python -c "from calculadora import suma, resta, multiplicacion, division; assert division(10,2)==5; print('✓ división OK')"
+          echo "=== Todas las pruebas pasaron ==="
